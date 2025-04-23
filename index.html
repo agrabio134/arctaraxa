@@ -1,0 +1,858 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>$ARCTARA</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="/assets/photo_5821411180399415367_y.jpg">
+        <style>
+            /* Comic book-inspigreen background with halftone dots and shuriken pattern */
+            body {
+                background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M50 20L60 40L80 50L60 60L50 80L40 60L20 50L40 40Z" fill="white" opacity="0.2"/></svg>'), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="4" cy="4" r="2" fill="white" opacity="0.3"/></svg>'), linear-gradient(135deg, #f5f5f5, #1f2937);
+                font-family: 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;                margin: 0;
+                padding: 0;
+                color: #ffffff;
+            }
+            /* Speech bubble style with comic book vibe */
+            .speech-bubble {
+            position: relative;
+            background: #f9fafb;
+            border: 4px solid #15803d;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 1rem;
+            box-shadow: 4px 4px 0 #15803d;
+            transform: rotate(-1deg);
+            }
+            .speech-bubble::after {
+                content: '';
+                position: absolute;
+                bottom: -24px;
+                left: 60px;
+                border: 12px solid transparent;
+                border-top: 12px solid #ffffff;
+                border-right: 12px solid #15803d;
+                border-bottom: 0;
+                border-left: 0;
+            }
+            .speech-bubble h2 {
+                font-size: 3.9rem;
+                font-weight: 900;
+                color: #1f2937;
+                margin-bottom: 1rem;
+                text-shadow: 1px 1px 0 #15803d;
+            }
+            .speech-bubble p {
+                font-size: 1.75rem;
+                font-weight: 700;
+                color: #1f2937;
+            }
+            /* Contract address box */
+            .ca-box {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #e5e7eb;
+                border: 6px solid #15803d;
+                border-radius: 10px;
+                padding: 1rem;
+                margin-top: 1rem;
+                max-width: 90%;
+                width: 100%;
+                box-sizing: border-box;
+                gap: 1rem;
+                box-shadow: 6px 6px 0 #15803d;
+            }
+            .ca-box span {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: #1f2937;
+                word-break: break-all;
+                flex: 1;
+            }
+            .copy-btn {
+                background: #15803d;
+                color: #ffffff;
+                font-size: 1rem;
+                font-weight: 900;
+                padding: 0.5rem 1rem;
+                border: 4px solid #15803d;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.3s ease, transform 0.2s ease;
+                flex-shrink: 0;
+                position: relative;
+                box-shadow: 4px 4px 0 #15803d;
+            }
+            .copy-btn:hover {
+                background: #09a242;
+                transform: scale(1.05);
+            }
+            .copy-btn.copied::after {
+                content: 'Copied!';
+                position: absolute;
+                bottom: -2.5rem;
+                right: 0;
+                background: #15803d;
+                color: #ffffff;
+                padding: 0.4rem 0.8rem;
+                border-radius: 6px;
+                font-size: 0.9rem;
+                box-shadow: 3px 3px 0 #1f2937;
+            }
+            /* Comic panel style for images */
+            .comic-panel {
+                transition: transform 0.3s ease, opacity 0.3s ease;
+                background: #e0e0e0;
+                border: 6px solid #15803d;
+                border-radius: 12px;
+                overflow: hidden;
+                margin: 1rem;
+                max-width: 300px;
+                box-shadow: 8px 8px 0 #15803d;
+                transform: rotate(2deg);
+            }
+            .comic-panel:hover {
+                transform: scale(1.05) rotate(0deg);
+                opacity: 0.9;
+                box-shadow: 10px 10px 0 #15803d;
+            }
+            .comic-panel img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
+            }
+            .comic-panel p {
+                color: #1f2937;
+                padding: 0.5rem;
+                text-align: center;
+                font-size: 1.25rem;
+                font-weight: 700;
+            }
+            /* Section styling */
+            .section-title {
+                font-size: 3rem;
+                font-weight: 900;
+                text-align: center;
+                margin: 2rem 0;
+                text-shadow: 1px 1px 0 #15803d;
+                color: #ffffff;
+            }
+            /* Content wrapper for text and images */
+            .content-wrapper {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+                margin: 2rem 0;
+            }
+            .content-text {
+                max-width: 500px;
+                font-size: 1.5rem;
+                font-weight: 700;
+                line-height: 1.6;
+                color: #ffffff;
+            }
+            /* Roadmap timeline styling */
+            .timeline {
+                position: relative;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 2rem 0;
+            }
+            .timeline::before {
+                content: '';
+                position: absolute;
+                width: 6px;
+                background: #15803d;
+                top: 0;
+                bottom: 0;
+                left: 50%;
+                margin-left: -3px;
+                box-shadow: 0 0 10px rgba(10, 195, 80, 0.5);
+            }
+            .timeline-item {
+                position: relative;
+                width: 50%;
+                padding: 1rem;
+                box-sizing: border-box;
+            }
+            .timeline-item:nth-child(odd) {
+                left: 0;
+                text-align: right;
+                transform: rotate(-2deg);
+            }
+            .timeline-item:nth-child(even) {
+                left: 50%;
+                text-align: left;
+                transform: rotate(2deg);
+            }
+            .timeline-item::before {
+                content: '';
+                position: absolute;
+                width: 24px;
+                height: 24px;
+                background: #15803d;
+                border: 4px solid #15803d;
+                border-radius: 50%;
+                top: 20px;
+                box-shadow: 3px 3px 0 #15803d;
+            }
+            .timeline-item:nth-child(odd)::before {
+                right: -14px;
+            }
+            .timeline-item:nth-child(even)::before {
+                left: -14px;
+            }
+            .timeline-content {
+                background: #d1d5db;
+                border: 6px solid #15803d;
+                border-radius: 12px;
+                padding: 1rem;
+                position: relative;
+                box-shadow: 6px 6px 0 #15803d;
+            }
+            .timeline-content h4 {
+                font-size: 2rem;
+                font-weight: 900;
+                margin-bottom: 0.5rem;
+                color: #1f2937;
+                text-shadow: 1px 1px 0 #15803d;
+            }
+            .timeline-content p {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #1f2937;
+            }
+            /* Connect buttons */
+            .connect-btn {
+                background: #15803d;
+                color: #ffffff;
+                font-size: 1.5rem;
+                font-weight: 900;
+                padding: 0.75rem 1.5rem;
+                border: 4px solid #15803d;
+                border-radius: 8px;
+                margin: 0.5rem;
+                text-decoration: none;
+                transition: background 0.3s ease, transform 0.2s ease;
+                box-shadow: 6px 6px 0 #15803d;
+                transform: rotate(-1deg);
+            }
+            .connect-btn:hover {
+                background: #09a242;
+                transform: scale(1.05) rotate(0deg);
+            }
+            /* Header and Footer */
+            header, footer {
+                background: #1f2937;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            }
+            header a, footer a {
+                color: #15803d;
+                font-size: 1.5rem;
+                font-weight: 900;
+            }
+            header a:hover, footer a:hover {
+                color: #09a242;
+            }
+            footer p {
+                font-size: 1.5rem;
+                font-weight: 900;
+            }
+            /* Scroll animation */
+            .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+            .fade-in.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            /* Navigation styling */
+            .nav-container {
+                max-width: 750px;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 0 1rem;
+            }
+            /* Navigation links */
+            nav ul {
+                display: flex;
+                gap: 1rem;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            nav ul li a {
+                color: #1bde62;
+                text-transform: uppercase;
+                /* letter-spacing: 1px; */
+                font-weight: 900;
+                transition: color 0.3s ease;
+            }
+            nav ul li a:hover {
+                color: #199b49;
+            }
+            /* Hamburger menu styling */
+            .hamburger {
+                display: none;
+                flex-direction: column;
+                cursor: pointer;
+                z-index: 1000;
+            }
+            .hamburger .bar {
+                width: 20px;
+                height: 2px;
+                background: #15803d;
+                margin: 3px 0;
+                transition: all 0.3s ease;
+                box-shadow: 2px 2px 0 #15803d;
+            }
+            .hamburger.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .hamburger.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+            /* Mobile Responsiveness */
+            @media (max-width: 768px) {
+                .speech-bubble {
+                    transform: rotate(0deg);
+                }
+                .speech-bubble h2 {
+                    font-size: 2.5rem;
+                }
+                .speech-bubble p {
+                    font-size: 1.25rem;
+                }
+                .ca-box {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 0.75rem;
+                    transform: rotate(0deg);
+                }
+                .ca-box span {
+                    font-size: 1rem;
+                }
+                .copy-btn {
+                    font-size: 0.9rem;
+                    padding: 0.4rem 0.8rem;
+                    align-self: flex-end;
+                }
+                .section-title {
+                    font-size: 2rem;
+                }
+                .content-text {
+                    font-size: 1.2rem;
+                    max-width: 100%;
+                }
+                .comic-panel {
+                    max-width: 200px;
+                    transform: rotate(0deg);
+                }
+                .comic-panel img {
+                    height: 150px;
+                }
+                .comic-panel p {
+                    font-size: 1rem;
+                }
+                .timeline {
+                    padding: 1rem 0;
+                }
+                .timeline::before {
+                    left: 10px;
+                }
+                .timeline-item {
+                    width: 100%;
+                    text-align: left;
+                    padding-left: 30px;
+                    transform: rotate(0deg);
+                }
+                .timeline-item:nth-child(odd) {
+                    left: 0;
+                }
+                .timeline-item:nth-child(even) {
+                    left: 0;
+                }
+                .timeline-item::before {
+                    left: -2px;
+                }
+                .timeline-content h4 {
+                    font-size: 1.5rem;
+                }
+                .timeline-content p {
+                    font-size: 1.2rem;
+                }
+                .connect-btn {
+                    font-size: 1.2rem;
+                    padding: 0.5rem 1rem;
+                    transform: rotate(0deg);
+                }
+                header a, footer a {
+                    font-size: 1.2rem;
+                }
+                footer p {
+                    font-size: 1.2rem;
+                }
+                .content-wrapper {
+                    gap: 1rem;
+                }
+                /* Hamburger menu for mobile */
+                .hamburger {
+                    display: flex;
+                }
+                header nav ul {
+                    display: none !important;
+                    flex-direction: column;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: #1f2937;
+                    padding: 1rem;
+                    z-index: 999;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+                }
+                header nav ul.active {
+                    display: flex !important;
+                }
+                nav ul li {
+                    margin: 0.75rem 0;
+                    text-align: center;
+                }
+                nav ul li a {
+                    font-size: 1rem;
+                    padding: 0.5rem;
+                    display: block;
+                }
+            }
+            @media (max-width: 480px) {
+                .speech-bubble h2 {
+                    font-size: 2rem;
+                }
+                .speech-bubble p {
+                    font-size: 1rem;
+                }
+                .ca-box span {
+                    font-size: 0.9rem;
+                }
+                .copy-btn {
+                    font-size: 0.8rem;
+                    padding: 0.3rem 0.6rem;
+                }
+                .section-title {
+                    font-size: 1.5rem;
+                }
+                .content-text {
+                    font-size: 1rem;
+                }
+                .comic-panel {
+                    max-width: 150px;
+                }
+                .comic-panel img {
+                    height: 120px;
+                }
+                .comic-panel p {
+                    font-size: 0.9rem;
+                }
+                .timeline-content h4 {
+                    font-size: 1.2rem;
+                }
+                .timeline-content p {
+                    font-size: 1rem;
+                }
+                .connect-btn {
+                    font-size: 1rem;
+                    padding: 0.5rem 0.75rem;
+                }
+                header a, footer a {
+                    font-size: 1rem;
+                }
+                footer p {
+                    font-size: 1rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Header -->
+        <header class="bg-gray-900 text-green-500 p-3 shadow-lg fixed w-full top-0 z-50">
+            <div class="nav-container px-4">
+                <h1 class="text-2xl font-bold tracking-wider">$ARCTARA</h1>
+                <nav>
+                    <div class="hamburger">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                    <ul class="flex space-x-4 items-center">
+                        <li><a href="#home" class="hover:text-green-400 transition text-sm font-bold">Home</a></li>
+                        <li><a href="#mission" class="hover:text-green-400 transition text-sm font-bold">Mission</a></li>
+                        <li><a href="#squad" class="hover:text-green-400 transition text-sm font-bold">Squad</a></li>
+                        <li><a href="#roadmap" class="hover:text-green-400 transition text-sm font-bold">Roadmap</a></li>
+                        <li><a href="#tokenomics" class="hover:text-green-400 transition text-sm font-bold">Tokenomics</a></li>
+                        <li><a href="#community" class="hover:text-green-400 transition text-sm font-bold">Community</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section id="home" class="container mx-auto my-12 text-center pt-20">
+            <div class="speech-bubble max-w-2xl mx-auto">
+                <h2>Welcome to the $ARCTARA</h2>
+                <p>Born in Arctic frost, powered by $TARA, Arctara is a ninja polar bear on a stealthy journey—turning pain into power, solitude into a ninja squad.</p>
+                <div class="ca-box">
+                    <span>Ca: 0x1B40957F94e4e5640C8E4317daCfc70B4A0F5154</span>
+                    <button class="copy-btn" onclick="copyText(this, '0x1B40957F94e4e5640C8E4317daCfc70B4A0F5154')">Copy</button>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5821411180399415367_y.jpg" alt="Arctara Ninja 1">
+                    <p>Arctara begins the journey in the icy tundra.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823227363155103037_y.jpg" alt="Arctara Ninja 2">
+                    <p>Mastering stealth under the Arctic moon.</p>
+                </div>
+            </div>
+            <a href="#connect" class="mt-6 inline-block bg-green-600 text-white font-bold py-3 px-6 border-4 border-green-900 rounded-lg shadow-md hover:bg-green-700 transition transform rotate-2deg hover:rotate-0">
+                Join the Ninja Squad!
+            </a>
+        </section>
+
+        <!-- Mission Section -->
+        <section id="mission" class="container mx-auto my-12">
+            <h3 class="section-title">Arctara's Mission</h3>
+            <div class="content-wrapper">
+                <div class="content-text">
+                    <p>Arctara's mission is to protect the Arctic realm from threats while uniting a squad of ninja warriors. Using the power of $TARA, Arctara combines stealth, strength, and ancient ninja techniques to defend the frozen lands and bring honor to the dojo.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823227363155103039_y.jpg" alt="Arctara Ninja 3">
+                    <p>Arctara crafts icy shurikens for battle.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823227363155103041_y.jpg" alt="Arctara Ninja 4">
+                    <p>Training in an ancient ninja dojo.</p>
+                </div>
+                <div class="content-text">
+                    <p>Every step Arctara takes is guided by the ninja code—honor, loyalty, and resilience. The mission is not just about survival but about creating a legacy that inspires others to rise above challenges.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="content-text">
+                    <p>Arctara's ultimate goal is to harness $TARA's energy to restore balance to the Arctic, ensuring the safety of its inhabitants and the preservation of its ancient traditions.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823227363155103044_y.jpg" alt="Arctara Ninja 5">
+                    <p>Striking with precision under moonlight.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ninja Squad Section -->
+        <section id="squad" class="container mx-auto my-12">
+            <h3 class="section-title">The Ninja Squad</h3>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823227363155103045_y.jpg" alt="Arctara Ninja 6">
+                    <p>Arctara sets an ambush on a glacier.</p>
+                </div>
+                <div class="content-text">
+                    <p>Arctara isn't alone on this journey. The ninja squad consists of skilled warriors from across the Arctic, each bringing unique abilities to the fight. Together, they form an unstoppable force.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="content-text">
+                    <p>From ice-forged weapons to shadow cloaks, the squad uses every tool at their disposal to protect their homeland. Their bond is forged through shagreen struggles and victories.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823620249583470790_y.jpg" alt="Arctara Ninja 7">
+                    <p>Facing off in a frosty ninja duel.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823620249583470791_y.jpg" alt="Arctara Ninja 8">
+                    <p>Discovering a hidden ninja path.</p>
+                </div>
+                <div class="content-text">
+                    <p>The squad's unity is their greatest strength. Whether ambushing enemies or defending their territory, they move as one, guided by Arctara's leadership and $TARA's power.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="content-text">
+                    <p>Join the ninja squad and become part of Arctara's legacy. Together, we can protect the Arctic and uphold the ninja way!</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823620249583470792_y.jpg" alt="Arctara Ninja 9">
+                    <p>Using smoke bombs to escape foes.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section id="roadmap" class="container mx-auto my-12">
+            <h3 class="section-title">Roadmap to Arctic Dominance</h3>
+            <div class="timeline">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4>Q1 2025 - Launch</h4>
+                        <p>Official launch of $ARCTARA, introducing the ninja polar bear to the world. Initial token distribution and community building begin.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4>Q2 2025 - Squad Formation</h4>
+                        <p>Expansion of the ninja squad with new characters and stories. First community events and partnerships announced.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4>Q3 2025 - Ninja Training</h4>
+                        <p>Introduction of interactive ninja training features for the community. Staking mechanisms for $TARA implemented.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4>Q4 2025 - Arctic Expansion</h4>
+                        <p>Expansion into new Arctic-themed platforms and collaborations. First token burn event to increase $TARA value.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4>Q1 2026 - Global Stealth</h4>
+                        <p>Global outreach with ninja-themed campaigns. Integration with major DeFi platforms for $TARA utility.</p>
+                    </div>
+                </div>
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <h4>Q2 2026 - Ultimate Dojo</h4>
+                        <p>Launch of the ultimate $ARCTARA dojo, a virtual space for community members to train, trade, and battle as ninjas.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823620249583470793_y.jpg" alt="Arctara Ninja 10">
+                    <p>Mastering shuriken techniques.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5823620249583470794_y.jpg" alt="Arctara Ninja 11">
+                    <p>Sharpening reflexes in the cold.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tokenomics Section -->
+        <section id="tokenomics" class="container mx-auto my-12 text-center">
+            <h3 class="section-title">$ARCTARA Tokenomics</h3>
+            <div class="speech-bubble max-w-2xl mx-auto">
+                <!-- <p>Dev Hold: 0%</p> -->
+                <p>Public: 80%</p>
+                <p>Marketing: 10%</p>
+                <p>Team: 5%</p>
+                <p>Future Burn: 5%</p>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_5834809661591767221_y.jpg" alt="Arctara Ninja 12">
+                    <p>Wielding an ice-forged katana.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6114041862215024273_y.jpg" alt="Arctara Ninja 13">
+                    <p>Donning a mystical shadow cloak.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section id="community" class="container mx-auto my-12">
+            <h3 class="section-title">Join the $ARCTARA Community</h3>
+            <div class="content-wrapper">
+                <div class="content-text">
+                    <p>The $ARCTARA community is a group of ninja enthusiasts, crypto warriors, and Arctic protectors. Together, we support Arctara's mission and grow the $TARA ecosystem.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6114041862215024283_y.jpg" alt="Arctara Ninja 14">
+                    <p>Setting a clever ninja trap.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6114041862215024287_y.jpg" alt="Arctara Ninja 15">
+                    <p>Escaping with ninja agility.</p>
+                </div>
+                <div class="content-text">
+                    <p>Participate in community events, share your ninja skills, and help shape the future of $ARCTARA. From battles to token burns, every member plays a role in our success.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="content-text">
+                    <p>Connect with us and become part of the ninja squad. Together, we'll make the Arctic a stronghold of stealth and honor!</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6114041862215024273_y.jpg" alt="Arctara Ninja 16">
+                    <p>Meditating for focus and clarity.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6114041862215024283_y.jpg" alt="Arctara Ninja 17">
+                    <p>Striking with glacial precision.</p>
+                </div>
+                <div class="content-text">
+                    <p>Our community is growing every day. Join us now and be part of the $ARCTARA legacy!</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6114041862215024287_y.jpg" alt="Arctara Ninja 18">
+                    <p>Forming a ninja squad.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6116049682116494301_y.jpg" alt="Arctara Ninja 19">
+                    <p>Unleashing Arctic fury.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6118538538355116238_y.jpg" alt="Arctara Ninja 20">
+                    <p>Following the ancient ninja code.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6118301481930179709_y.jpg" alt="Arctara Ninja 21">
+                    <p>Pursuing enemies in the frost.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6118400253293087004_y.jpg" alt="Arctara Ninja 22">
+                    <p>Preparing for a new mission.</p>
+                </div>
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6123072052429704880_y.jpg" alt="Arctara Ninja 23">
+                    <p>Making a final ninja stand.</p>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <div class="comic-panel fade-in">
+                    <img src="assets/photo_6120790338168800810_y.jpg" alt="Arctara Ninja 24">
+                    <p>Emerging victorious in the Arctic.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connect Section -->
+        <section id="connect" class="container mx-auto my-12 text-center">
+            <h3 class="section-title">Connect with $ARCTARA</h3>
+            <div class="content-wrapper">
+                <a href="https://t.me/arctaratg" class="connect-btn">Join on Telegram</a>
+                <a href="https://x.com" class="connect-btn">Follow on X</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 text-green-500 p-6 text-center">
+            <p>© 2025 $ARCTARA. All rights reserved.</p>
+            <!-- <div class="mt-4">
+                <a href="#" class="hover:text-green-400 mx-2">Privacy Policy</a>
+                <a href="#" class="hover:text-green-400 mx-2">Terms of Service</a>
+            </div> -->
+        </footer>
+
+        <script>
+            // Function to copy text to clipboard
+            function copyText(element, text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    element.classList.add('copied');
+                    setTimeout(() => {
+                        element.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+
+            // Toggle hamburger menu
+            function toggleMenu() {
+                const hamburger = document.querySelector('.hamburger');
+                const navMenu = document.querySelector('nav ul');
+                hamburger.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            }
+
+            // Ensure hamburger click works
+            document.querySelector('.hamburger').removeEventListener('click', toggleMenu);
+            document.querySelector('.hamburger').addEventListener('click', toggleMenu);
+
+            // Ensure navigation is hidden on mobile by default
+            window.addEventListener('load', () => {
+                const navMenu = document.querySelector('nav ul');
+                const hamburger = document.querySelector('.hamburger');
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+
+            // Scroll animation for fade-in effect
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                    // Close menu on mobile after clicking a link
+                    const navMenu = document.querySelector('nav ul');
+                    const hamburger = document.querySelector('.hamburger');
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    }
+                });
+            });
+
+            // Add hover sound effect (simulated)
+            const panels = document.querySelectorAll('.comic-panel');
+            panels.forEach(panel => {
+                panel.addEventListener('mouseover', () => {
+                    console.log('Hover sound: *ninja swoosh*');
+                });
+            });
+
+            const buttons = document.querySelectorAll('.connect-btn');
+            buttons.forEach(button => {
+                panel.addEventListener('mouseover', () => {
+                    console.log('Hover sound: *ninja click*');
+                });
+            });
+        </script>
+    </body>
+    </html>
